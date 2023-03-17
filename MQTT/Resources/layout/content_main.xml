@@ -7,10 +7,20 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+    android:text="Subscribe"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:onClick="subscribeButton"
+    android:id="@+id/subscribeButton"/>
+
+     <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Hello World!" />
+        android:layout_below="@+id/subscribeButton"
+        android:padding="16dp"
+        android:text="Waiting for messages..."
+        android:textSize="18sp" />
 
 </RelativeLayout>

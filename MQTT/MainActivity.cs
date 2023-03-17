@@ -7,54 +7,86 @@ using AndroidX.AppCompat.Widget;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.FloatingActionButton;
 using Google.Android.Material.Snackbar;
+using MQTTnet;
+using MQTTnet.Client.Options;
+using MQTTnet.Client;
+using Android.Widget;
+using MQTTnet.Client.Subscribing;
+using System.Text;
 
 namespace MQTT
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        private Button subscribeButton;
+        private TextView messageTextView;
+
+        private IMqttClient mqttClient;
+        private bool isConnected = false;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
+            // Get UI elements
+            subscribeButton = FindViewById<Button>(Resource.Id.subscribeButton);
+            messageTextView = FindViewById<TextView>(Resource.Id.messageTextView);
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            // Create MQTT client
+            mqttClient = new MqttFactory().CreateMqttClient();
+
+            // Setup button click event handler
+            subscribeButton.Click += OnSubscribeButtonClick;
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
+        private async void OnSubscribeButtonClick(object sender, EventArgs e)
         {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-            return true;
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            int id = item.ItemId;
-            if (id == Resource.Id.action_settings)
+            if (!isConnected)
             {
-                return true;
+                // Setup MQTT connection options
+                var options = new MqttClientOptionsBuilder()
+                    .WithTcpServer("172.16.5.100")
+                    .WithCredentials("mams", "mams")
+                    .Build();
+
+                // Connect to MQTT broker
+                await mqttClient.ConnectAsync(options);
+
+                isConnected = true;
+
+                // Subscribe to CO2 topic
+                var subscribeResult = await mqttClient.SubscribeAsync(new TopicFilterBuilder().WithTopic("CO2").Build());
+
+
+                // Setup message received event handler
+                mqttClient.UseApplicationMessageReceivedHandler(async e =>
+                {
+                    // Display message in TextView
+                    messageTextView.Text = e.ApplicationMessage.Topic + ": " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+
+                    // Publish a message to a new topic
+                    var message = new MqttApplicationMessageBuilder()
+                        .WithTopic("CO2_received")
+                        .WithPayload("Received message: " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload))
+                        .WithExactlyOnceQoS()
+                        .WithRetainFlag()
+                        .Build();
+
+                    await mqttClient.PublishAsync(message);
+                });
             }
+            else
+            {
+                // Disconnect from MQTT broker
+                await mqttClient.DisconnectAsync();
 
-            return base.OnOptionsItemSelected(item);
+                isConnected = false;
+
+                // Clear TextView
+                messageTextView.Text = "";
+            }
         }
-
-        private void FabOnClick(object sender, EventArgs eventArgs)
-        {
-            View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (View.IOnClickListener)null).Show();
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-	}
+    }
 }
