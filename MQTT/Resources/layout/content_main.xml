@@ -7,20 +7,48 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
-    <Button
-    android:text="Subscribe"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:onClick="subscribeButton"
-    android:id="@+id/subscribeButton"/>
+      <Button
+        android:text="Subscribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="subscribeButton"
+        android:id="@+id/subscribeButton"/>
 
-     <TextView
+    <TextView
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/subscribeButton"
         android:padding="16dp"
         android:text="Waiting for messages..."
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/subscribeGazButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subscribe GAZ"
+        android:layout_below="@+id/messageTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/messageGazTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_below="@+id/subscribeGazButton"
+        android:padding="16dp"
+        android:layout_marginTop="16dp" />
+
+    <ListView
+    android:id="@+id/historiqueCO2ListView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/subscribeGazButton"
+    android:dividerHeight="1dp"
+    android:divider="@android:color/darker_gray"
+    android:layout_marginTop="16dp" />
 
 </RelativeLayout>
