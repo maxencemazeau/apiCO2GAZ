@@ -14,4 +14,11 @@ namespace MQTT
         public int UtilisateurId { get; set; }
         // Add other properties based on your database schema
     }
+
+    public class Utilisateur
+    {
+        public int Id { get; set; }
+        public string Login { get; set;  }
+        public string Password { get; set; }
+    }
 }
