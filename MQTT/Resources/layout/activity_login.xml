@@ -3,22 +3,45 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="16dp">
+              android:padding="16dp"
+              android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="Connexion"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"/>
+
     <EditText
         android:id="@+id/usernameEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:inputType="text" />
+        android:layout_height="64dp"
+        android:hint="Nom d'utilisateur"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:background="@drawable/textborder"/>
+
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:layout_height="64dp"
+        android:hint="Mot de passe"
+        android:inputType="textPassword"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:background="@drawable/textborder"/>
+
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:text="Se connecter"
+        android:background="#7396F0"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

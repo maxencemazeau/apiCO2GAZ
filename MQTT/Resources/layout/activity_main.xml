@@ -8,26 +8,85 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#fff"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+          <Button
+            android:id="@+id/optionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:background="#7396F0"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:text="Options" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+   <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_gravity="center_vertical">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/dynamicValueTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:fontFamily="sans-serif"
+        android:textColor="#000"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:text="1234"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:textColor="#000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Dynamic Value"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+      android:layout_marginTop="24dp"
+        android:padding="16dp">
+
+ <View
+    android:id="@+id/redView"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:background="@drawable/square" />
+
+<View
+    android:id="@+id/orangeView"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/square"
+    android:backgroundTint="#ffa500" />
+
+<View
+    android:id="@+id/greenView"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:background="@drawable/square"
+    android:backgroundTint="#00ff00" />
+
+    </LinearLayout>
+
+</LinearLayout>
 
    
 

@@ -7,18 +7,21 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:id="@+id/optionsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:text="Options"/>
+     <Button
+            android:id="@+id/retour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:background="#7396F0"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:text="Retour" />
 
       <Button
         android:text="Subscribe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:onClick="subscribeButton"
         android:id="@+id/subscribeButton"/>
 
@@ -38,6 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Subscribe GAZ"
         android:layout_below="@+id/messageTextView"
+         android:layout_gravity="end|top"
         android:layout_alignParentStart="true"
         android:layout_marginTop="16dp"/>
 

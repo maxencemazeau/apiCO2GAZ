@@ -66,6 +66,8 @@
     <Compile Include="Constructeur.cs" />
     <Compile Include="Dashboard.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="MQTTService.cs" />
+    <Compile Include="AppData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -103,6 +105,14 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
     <AndroidResource Include="Resources\layout\activity_login.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\textBorder.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\square.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
