@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/maxencemazeau/apiCO2GAZ/issues"
   },
-  "homepage": "https://github.com/maxencemazeau/apiCO2GAZ#readme"
+  "homepage": "https://github.com/maxencemazeau/apiCO2GAZ#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "node": "^19.8.1"
+  }
 }

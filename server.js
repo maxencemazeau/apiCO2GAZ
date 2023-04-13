@@ -10,14 +10,14 @@ app.listen(port, () => console.log('Listen on port ' + port))
 // //Mysql
 
 app.use(function(req, res, next){
-   res.locals.connection = mysql.createConnection({
+   connect = mysql.createConnection({
     connectionLimit : 10,
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database : 'CO2GAZ'
+    host : 'sql313.epizy.com',
+    user : 'epiz_34005400',
+    password : 'JgEdEe4JCk1IDJ',
+    database : 'epiz_34005400_co2gaz'
 });
-    res.locals.connection.connect();
+    connect();
     next();
 });
 
@@ -49,7 +49,7 @@ app.post('/api/controller/connexion', function(req, res){
     const query = `SELECT * FROM utilisateur WHERE login = '${login}' AND password = '${password}'`;
     console.log(query);
     // Execute the SQL query
-    res.locals.connection.query(query, function(err, rows) {
+    connect.query(query, function(err, rows) {
       if (err) {
         console.log(err);
         res.status(500).send('Internal server error');
@@ -70,7 +70,7 @@ app.post('/api/controller/connexion', function(req, res){
 //API pour gérer le GAZ et CO2
 
 app.get('/api/controller/historiqueCO2', function(req, res, next){ 
-   res.locals.connection.query('Select * from historiqueCO2', function(error, results, fields){
+   connect.query('Select * from historiqueCO2', function(error, results, fields){
         if (error) throw error;
         res.json(results);
     })
