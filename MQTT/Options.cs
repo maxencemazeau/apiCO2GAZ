@@ -144,15 +144,7 @@ namespace MQTT
                     var api = new ApiCall();
                     await api.PostNiveauAsync(payload);
 
-                    // Publish a message to a new topic
-                    var message = new MqttApplicationMessageBuilder()
-                        .WithTopic("CO2_received")
-                        .WithPayload("Message reçu")
-                        .WithExactlyOnceQoS()
-                        .WithRetainFlag()
-                        .Build();
-
-                    await mqttClient.PublishAsync(message);
+                    
                 });
             }
             else
@@ -207,5 +199,7 @@ namespace MQTT
                 messageGazTextView.Text = "";
             }
         }
+
+        
     }
 }

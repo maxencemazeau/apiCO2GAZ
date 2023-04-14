@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.App;
 using Android.OS;
+using Android.Util;
 using Android.Runtime;
 using Android.Views;
 using AndroidX.AppCompat.Widget;
@@ -15,6 +16,7 @@ using MQTTnet.Client.Subscribing;
 using System.Text;
 using System.Collections.Generic;
 using Android.Content;
+using Java.IO;
 
 namespace MQTT
 {
@@ -30,9 +32,7 @@ namespace MQTT
         private View orangeView;
         private View greenView;
 
-        private System.Timers.Timer updateTimer;
-
-
+        private System.Timers.Timer updateTimer;     
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -46,9 +46,6 @@ namespace MQTT
             redView = FindViewById<View>(Resource.Id.redView);
             orangeView = FindViewById<View>(Resource.Id.orangeView);
             greenView = FindViewById<View>(Resource.Id.greenView);
-
-            // Create a new instance of MQTTService
-            MQTTService mqttService = new MQTTService();
 
             // Setup button click event handler
             optionButton.Click += OnOptionButtonClick;
@@ -70,16 +67,16 @@ namespace MQTT
             StartActivity(intent);
         }
 
-        private void OnUpdateTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private async void OnUpdateTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
 
-
-            // Retrieve the value of MessageTopic
-            string messageTopic = AppData.MQTTService.MessageTopic;
+           
+                // Retrieve the value of MessageTopic
+                string messageTopic = AppData.MQTTService.MessageTopic;
             string titreTopic = AppData.MQTTService.TitreTopic;
-            
 
-            
+            string messageContent = null;
+
             RunOnUiThread(() => {
                 messageTextView.Text = messageTopic;
                 titreTextView.Text = titreTopic;
@@ -88,41 +85,67 @@ namespace MQTT
 
                 if (messageTopic != null)
                 {
-
                     double.TryParse(messageTopic, out niveau);
-                    Console.WriteLine(messageTopic);
                     int results = Convert.ToInt32(niveau);
 
                     if (results > 700)
                     {
-
                         redView.Visibility = ViewStates.Visible;
                         greenView.Visibility = ViewStates.Gone;
                         orangeView.Visibility = ViewStates.Gone;
+                        messageContent = "High";
+                        
 
                     }
                     else if (results > 600)
                     {
-
-                        greenView.Visibility = ViewStates.Gone;
+                        orangeView.Visibility = ViewStates.Visible;
                         redView.Visibility = ViewStates.Gone;
                         greenView.Visibility = ViewStates.Gone;
-
+                        messageContent = "Medium";
+                        
                     }
                     else
                     {
                         greenView.Visibility = ViewStates.Visible;
                         redView.Visibility = ViewStates.Gone;
                         orangeView.Visibility = ViewStates.Gone;
-
+                        messageContent = "OK";
+                       
                     }
                 }
 
+                
             });
 
-       
+            // Create MQTT client options
+            var options = new MqttClientOptionsBuilder()
+                .WithTcpServer("172.16.5.100")
+                .WithCredentials("mams", "mams")
+                .Build();
+
+            // Create MQTT client instance
+            var factory = new MqttFactory();
+            var mqttClient = factory.CreateMqttClient();
+
+            // Connect to broker
+            await mqttClient.ConnectAsync(options);
+
+            // Publish message on "test" topic with messageContent payload
+            var message = new MqttApplicationMessageBuilder()
+                .WithTopic("niveauCO2")
+                .WithPayload(messageContent)
+                .WithExactlyOnceQoS()
+                .WithRetainFlag()
+                .Build();
+
+            await mqttClient.PublishAsync(message);
+
+            // Disconnect from broker
+            await mqttClient.DisconnectAsync();
+        }
         }
 
 
     }
-}
+

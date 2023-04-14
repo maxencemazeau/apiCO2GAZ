@@ -68,6 +68,7 @@
     <Compile Include="Options.cs" />
     <Compile Include="MQTTService.cs" />
     <Compile Include="AppData.cs" />
+    <Compile Include="MessageContentEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
