@@ -8,7 +8,7 @@ using Android.Widget;
 
 namespace MQTT
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = false)]
     public class MainActivity : Activity
     {
         private EditText usernameEditText, passwordEditText;

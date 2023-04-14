@@ -18,13 +18,17 @@ using Android.Content;
 
 namespace MQTT
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = false)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class Dashboard : Activity
     {
    
 
         private Button optionButton;
         private TextView messageTextView;
+        private TextView titreTextView;
+        private View redView;
+        private View orangeView;
+        private View greenView;
 
         private System.Timers.Timer updateTimer;
 
@@ -37,6 +41,11 @@ namespace MQTT
 
             optionButton = FindViewById<Button>(Resource.Id.optionButton);
             messageTextView = FindViewById<TextView>(Resource.Id.dynamicValueTextView);
+            titreTextView = FindViewById<TextView>(Resource.Id.titleTextView);
+
+            redView = FindViewById<View>(Resource.Id.redView);
+            orangeView = FindViewById<View>(Resource.Id.orangeView);
+            greenView = FindViewById<View>(Resource.Id.greenView);
 
             // Create a new instance of MQTTService
             MQTTService mqttService = new MQTTService();
@@ -67,11 +76,51 @@ namespace MQTT
 
             // Retrieve the value of MessageTopic
             string messageTopic = AppData.MQTTService.MessageTopic;
+            string titreTopic = AppData.MQTTService.TitreTopic;
+            
 
             
             RunOnUiThread(() => {
                 messageTextView.Text = messageTopic;
+                titreTextView.Text = titreTopic;
+
+                double niveau;
+
+                if (messageTopic != null)
+                {
+
+                    double.TryParse(messageTopic, out niveau);
+                    Console.WriteLine(messageTopic);
+                    int results = Convert.ToInt32(niveau);
+
+                    if (results > 700)
+                    {
+
+                        redView.Visibility = ViewStates.Visible;
+                        greenView.Visibility = ViewStates.Gone;
+                        orangeView.Visibility = ViewStates.Gone;
+
+                    }
+                    else if (results > 600)
+                    {
+
+                        greenView.Visibility = ViewStates.Gone;
+                        redView.Visibility = ViewStates.Gone;
+                        greenView.Visibility = ViewStates.Gone;
+
+                    }
+                    else
+                    {
+                        greenView.Visibility = ViewStates.Visible;
+                        redView.Visibility = ViewStates.Gone;
+                        orangeView.Visibility = ViewStates.Gone;
+
+                    }
+                }
+
             });
+
+       
         }
 
 

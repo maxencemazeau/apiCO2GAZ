@@ -134,7 +134,8 @@ namespace MQTT
                     string payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
                     // Display message in TextView
                     messageTextView.Text = e.ApplicationMessage.Topic + ": " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-                    AppData.MQTTService.MessageTopic = e.ApplicationMessage.Topic + ": " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+                    AppData.MQTTService.MessageTopic = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+                    AppData.MQTTService.TitreTopic = e.ApplicationMessage.Topic;
 
                     // Extract niveau value from payload
 
@@ -190,7 +191,7 @@ namespace MQTT
                     if (e.ApplicationMessage.Topic == "GAZ")
                     {
                         // Display message in TextView
-                        messageGazTextView.Text = e.ApplicationMessage.Topic + ": " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+                        messageGazTextView.Text = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
                     }
                     // Handle other topics here if needed
                 });

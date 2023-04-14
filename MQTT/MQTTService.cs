@@ -7,7 +7,7 @@ namespace MQTT
 		
 		
 	public string MessageTopic { get; set; }
-	
+	public string TitreTopic { get; set; }
            
 	}
 }
