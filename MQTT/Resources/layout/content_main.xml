@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -35,32 +34,91 @@
         android:textSize="18sp"
         android:layout_marginTop="16dp" />
 
-    <Button
-        android:id="@+id/subscribeGazButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Subscribe GAZ"
-        android:layout_below="@+id/messageTextView"
-         android:layout_gravity="end|top"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"/>
-
-    <TextView
-        android:id="@+id/messageGazTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_below="@+id/subscribeGazButton"
-        android:padding="16dp"
-        android:layout_marginTop="16dp" />
-
-    <ListView
-    android:id="@+id/historiqueCO2ListView"
+   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/subscribeGazButton"
-    android:dividerHeight="1dp"
-    android:divider="@android:color/darker_gray"
-    android:layout_marginTop="16dp" />
+    android:layout_below="@id/messageTextView"
+    android:orientation="vertical"
+    android:layout_marginTop="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ipbroker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Adresse ip du broker"/>
+
+        <Button
+            android:id="@+id/inputButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="broker"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/topic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Nom du topic"/>
+
+        <Button
+            android:id="@+id/inputButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Topic"/>
+    </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/moyen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Valeur moyenne"/>
+
+        <Button
+            android:id="@+id/inputButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="med"/>
+    </LinearLayout>
+
+        
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/fort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Valeur haute"/>
+
+        <Button
+            android:id="@+id/inputButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="high"/>
+    </LinearLayout>
+
+</LinearLayout>
+
 
 </RelativeLayout>
