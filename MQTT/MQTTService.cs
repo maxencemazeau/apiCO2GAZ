@@ -15,6 +15,8 @@ namespace MQTT
 
         public string MessageTopic { get; set; }
         public string TitreTopic { get; set; }
+        public string Moyen { get; set; }
+        public string Fort { get; set; }
 
         public IMqttClient MqttClient
         {

@@ -38,7 +38,7 @@
         android:textColor="#000"
         android:textSize="40sp"
         android:textStyle="bold"
-        android:text="1234"
+        android:text=""
         android:gravity="center" />
 
     <TextView
@@ -50,7 +50,7 @@
         android:textColor="#000"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:text="Dynamic Value"
+        android:text=""
         android:gravity="center" />
 
     <LinearLayout

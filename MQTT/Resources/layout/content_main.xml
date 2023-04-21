@@ -6,119 +6,65 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
-     <Button
-            android:id="@+id/retour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|top"
-            android:background="#7396F0"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:text="Retour" />
-
-      <Button
-        android:text="Subscribe"
+    <Button
+        android:id="@+id/retour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:onClick="subscribeButton"
-        android:id="@+id/subscribeButton"/>
+        android:layout_gravity="end|top"
+        android:background="#7396F0"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:text="Retour" />
 
     <TextView
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/subscribeButton"
+        android:layout_below="@+id/retour"
         android:padding="16dp"
         android:text="Waiting for messages..."
         android:textSize="18sp"
         android:layout_marginTop="16dp" />
 
-   <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/messageTextView"
-    android:orientation="vertical"
-    android:layout_marginTop="16dp">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_below="@id/messageTextView"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
 
         <EditText
             android:id="@+id/ipbroker"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:hint="Adresse ip du broker"/>
-
-        <Button
-            android:id="@+id/inputButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="broker"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/topic"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:hint="Nom du topic"/>
-
-        <Button
-            android:id="@+id/inputButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Topic"/>
-    </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/moyen"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:hint="Valeur moyenne"/>
-
-        <Button
-            android:id="@+id/inputButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="med"/>
-    </LinearLayout>
-
-        
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/fort"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:hint="Valeur haute"/>
 
         <Button
-            android:id="@+id/inputButton4"
+            android:id="@+id/buttonDuTopic"
+            android:text="Subscribe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="high"/>
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="subscribeButton" />
     </LinearLayout>
-
-</LinearLayout>
-
 
 </RelativeLayout>

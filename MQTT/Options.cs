@@ -16,6 +16,7 @@ using System.Text;
 using System.Collections.Generic;
 using Android.Content;
 using MQTT;
+using System.Threading.Tasks;
 
 namespace MQTT
 {
@@ -33,7 +34,11 @@ namespace MQTT
         private TextView messageTextView;
 
         private Button topicButton;
-        private TextView messageGazTextView;
+        private TextView moyenEditText;
+        private TextView fortEditText;
+
+        private Button brokerButton;
+        private TextView ipEditText;
 
         private IMqttClient mqttClient;
         private bool isConnected = false;
@@ -51,11 +56,16 @@ namespace MQTT
             //BindHistoriqueCO2Async();
 
             // Get UI elements
-            subscribeButton = FindViewById<Button>(Resource.Id.subscribeButton);
+            topicButton = FindViewById<Button>(Resource.Id.buttonDuTopic);
             messageTextView = FindViewById<TextView>(Resource.Id.messageTextView);
 
-            topicButton = FindViewById<Button>(Resource.Id.inputButton2);
             topicEditText = FindViewById<EditText>(Resource.Id.topic);
+
+            ipEditText = FindViewById<TextView>(Resource.Id.ipbroker);
+
+            moyenEditText = FindViewById<TextView>(Resource.Id.moyen);
+
+            fortEditText = FindViewById<TextView>(Resource.Id.fort);
 
             retour = FindViewById<Button>(Resource.Id.retour);
 
@@ -66,9 +76,8 @@ namespace MQTT
             // Create MQTT client
             mqttClient = new MqttFactory().CreateMqttClient();
 
-            // Setup button click event handler
-            subscribeButton.Click += OnSubscribeButtonClick;
             topicButton.Click += OnTopicButtonClick;
+
 
             retour.Click += OnRetourButtonClick;
 
@@ -86,68 +95,71 @@ namespace MQTT
         }
 
 
-        private async void OnSubscribeButtonClick(object sender, EventArgs e)
-        {
-            if (!isConnected)
-            {
-                // Setup MQTT connection options
-                var options = new MqttClientOptionsBuilder()
-                    .WithTcpServer("172.16.5.100")
-                    .WithCredentials("mams", "mams")
-                    .Build();
+        //private async void OnSubscribeButtonClick(object sender, EventArgs e)
+        //{
+        //    if (!isConnected)
+        //    {
+        //        // Setup MQTT connection options
+        //        var options = new MqttClientOptionsBuilder()
+        //            .WithTcpServer("172.16.5.100")
+        //            .WithCredentials("mams", "mams")
+        //            .Build();
 
-                // Connect to MQTT broker
-                await mqttClient.ConnectAsync(options);
+        //        // Connect to MQTT broker
+        //        await mqttClient.ConnectAsync(options);
 
-                isConnected = true;
+        //        isConnected = true;
 
-                // Subscribe to CO2 topic
-                var subscribeResult = await mqttClient.SubscribeAsync(new TopicFilterBuilder().WithTopic("CO2").Build());
-
-
-                // Setup message received event handler
-                mqttClient.UseApplicationMessageReceivedHandler(async e =>
-                {
-                    string payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-                    // Display message in TextView
-                    messageTextView.Text = e.ApplicationMessage.Topic + ": " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-                    AppData.MQTTService.MessageTopic = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-                    AppData.MQTTService.TitreTopic = e.ApplicationMessage.Topic;
-
-                    // Extract niveau value from payload
+        //        // Subscribe to CO2 topic
+        //        var subscribeResult = await mqttClient.SubscribeAsync(new TopicFilterBuilder().WithTopic("CO2").Build());
 
 
-                    // Post niveau value to API
-                    var api = new ApiCall();
-                    await api.PostNiveauAsync(payload);
+        //        // Setup message received event handler
+        //        mqttClient.UseApplicationMessageReceivedHandler(async e =>
+        //        {
+        //            string payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+        //            // Display message in TextView
+        //            messageTextView.Text = e.ApplicationMessage.Topic + ": " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+        //            AppData.MQTTService.MessageTopic = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+        //            AppData.MQTTService.TitreTopic = e.ApplicationMessage.Topic;
+
+        //            // Extract niveau value from payload
+
+
+        //            // Post niveau value to API
+        //            var api = new ApiCall();
+        //            await api.PostNiveauAsync(payload);
 
                     
-                });
-            }
-            else
-            {
-                // Disconnect from MQTT broker
-                await mqttClient.DisconnectAsync();
+        //        });
+        //    }
+        //    else
+        //    {
+        //        // Disconnect from MQTT broker
+        //        await mqttClient.DisconnectAsync();
 
-                isConnected = false;
+        //        isConnected = false;
 
-                // Clear TextView
-                messageTextView.Text = "";
-            }
-        }
+        //        // Clear TextView
+        //        messageTextView.Text = "";
+        //    }
+        //}
 
         private async void OnTopicButtonClick(object sender, EventArgs e)
         {
 
             string topic = topicEditText.Text;
+            string brokerIp = ipEditText.Text;
+            string mid = moyenEditText.Text;
+            string high = fortEditText.Text;
 
             if (!isConnected)
             {
                 // Setup MQTT connection options
                 var options = new MqttClientOptionsBuilder()
-                    .WithTcpServer("172.16.5.100")
-                    .WithCredentials("mams", "mams")
-                    .Build();
+                .WithTcpServer(brokerIp)
+                .WithCredentials("mams", "mams")
+                .Build();
 
                 // Connect to MQTT broker
                 await mqttClient.ConnectAsync(options);
@@ -165,6 +177,8 @@ namespace MQTT
                     messageTextView.Text = e.ApplicationMessage.Topic + ": " + Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
                     AppData.MQTTService.MessageTopic = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
                     AppData.MQTTService.TitreTopic = e.ApplicationMessage.Topic;
+                    AppData.MQTTService.Moyen = mid;
+                    AppData.MQTTService.Fort = high;
 
                 });
             }

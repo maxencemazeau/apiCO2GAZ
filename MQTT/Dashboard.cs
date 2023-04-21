@@ -74,6 +74,10 @@ namespace MQTT
                 // Retrieve the value of MessageTopic
                 string messageTopic = AppData.MQTTService.MessageTopic;
             string titreTopic = AppData.MQTTService.TitreTopic;
+            string moyen = AppData.MQTTService.Moyen;
+            string fort = AppData.MQTTService.Fort;
+
+            
 
             string messageContent = null;
 
@@ -88,7 +92,10 @@ namespace MQTT
                     double.TryParse(messageTopic, out niveau);
                     int results = Convert.ToInt32(niveau);
 
-                    if (results > 700)
+                    int moyenInt = int.Parse(moyen);
+                    int fortInt = int.Parse(fort);
+
+                    if (results > fortInt)
                     {
                         redView.Visibility = ViewStates.Visible;
                         greenView.Visibility = ViewStates.Gone;
@@ -97,7 +104,7 @@ namespace MQTT
                         
 
                     }
-                    else if (results > 600)
+                    else if (results > moyenInt)
                     {
                         orangeView.Visibility = ViewStates.Visible;
                         redView.Visibility = ViewStates.Gone;
@@ -143,7 +150,7 @@ namespace MQTT
 
             // Disconnect from broker
             await mqttClient.DisconnectAsync();
-        }
+          }
         }
 
 
