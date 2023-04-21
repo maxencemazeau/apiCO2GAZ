@@ -1,0 +1,1 @@
+Creer un fichier .env avec : DATABASE_URL='mysql://kv96bqpsika4f3fzlpo9:pscale_pw_zCEUGbuglLySfFH2nShOhtOJpgY9jQbegg2UTMr3RL5@gcp.connect.psdb.cloud/co2gaz?ssl={"rejectUnauthorized":true}'
