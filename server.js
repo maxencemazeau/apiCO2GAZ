@@ -83,5 +83,26 @@ app.post('/api/controller/connexion', async function (req, res) {
       res.status(500).send('Internal server error');
     }
   });
+
+  app.post("/api/controller/envoieCO2", async (req, res) => {
+    console.log(req.body);
+    const { niveau } = req.body;
+    const date = new Date();
+  
+    try {
+      const result = await client.query(
+        q.Create(q.Collection("historiqueCO2"), {
+          data: {
+            niveau: niveau,
+            date: q.Time(date.toISOString()),
+          },
+        })
+      );
+      res.send("Donnée insérées");
+    } catch (error) {
+      console.error("Error creating document:", error);
+      res.status(500).send("Internal server error");
+    }
+  });
   
   
