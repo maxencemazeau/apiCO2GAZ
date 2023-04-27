@@ -1,25 +1,30 @@
 const express = require('express');
-const mysql = require('mysql');
+// const mysql = require('mysql');
 const cors = require ('cors');
 const app = express();
-const bodyParser = require('body-parser')
-const port = process.env.PORT || 8080
+const bodyParser = require('body-parser');
+const port = process.env.PORT || 8080;
+require('dotenv').config()
+const mysql = require('mysql2')
+const connection = mysql.createConnection(process.env.DATABASE_URL)
+console.log('Connected to PlanetScale!')
+
 
 
 app.listen(port, () => console.log('Listen on port ' + port))
 // //Mysql
 
-app.use(function(req, res, next){
-    connect = mysql.createConnection({
-    connectionLimit : 10,
-    host : 'sql313.epizy.com',
-    user : 'epiz_34005400',
-    password : 'JgEdEe4JCk1IDJ',
-    database : 'epiz_34005400_co2gaz'
-});
-    res.locals.connection.connect();
-    next();
-});
+// app.use(function(req, res, next){
+//     res.locals.connection = mysql.createConnection({
+//     connectionLimit : 10,
+//     host : 'localhost',
+//     user : 'root',
+//     password : '',
+//     database : 'CO2GAZ'
+// });
+//     res.locals.connection.connect();
+//     next();
+// });
 
 const corsOptions ={
     origin:'*', 
@@ -49,7 +54,7 @@ app.post('/api/controller/connexion', function(req, res){
     const query = `SELECT * FROM utilisateur WHERE login = '${login}' AND password = '${password}'`;
     console.log(query);
     // Execute the SQL query
-    connect.query(query, function(err, rows) {
+    connection.query(query, function(err, rows) {
       if (err) {
         console.log(err);
         res.status(500).send('Internal server error');
@@ -67,6 +72,13 @@ app.post('/api/controller/connexion', function(req, res){
     });
   });
 
+  app.get('/api/controller/utilisateur', (req, res) => {
+    connection('SELECT * from utilisateur', function(req, res){
+        if(error) throw error;
+        res.json(results);
+    })
+  })
+
 //API pour gérer le GAZ et CO2
 
 app.get('/api/controller/historiqueCO2', function(req, res, next){ 
@@ -77,7 +89,7 @@ app.get('/api/controller/historiqueCO2', function(req, res, next){
 });
 
 app.get('/api/controller/historiqueGAZ', function(req, res, next){ 
-    connect.query('Select * from historiqueGAZ', function(error, results, fields){
+    res.locals.connection.query('Select * from historiqueGAZ', function(error, results, fields){
         if (error) throw error;
         res.json(results);
     })
@@ -89,7 +101,7 @@ app.post('/api/controller/envoieCO2', (req, res) => {
     const date = new Date();
     const utilisateurId = 1;
     const sql = `INSERT INTO historiqueCO2 (niveau, date, utilisateurId) values (?,?,?)`;
-    connect.query(sql, [niveau, date, utilisateurId], (error, results) => {
+    res.locals.connection.query(sql, [niveau, date, utilisateurId], (error, results) => {
         if (error){
             console.log(error);
         } else {
@@ -104,7 +116,7 @@ app.post('/api/controller/envoieGAZ', (req, res) => {
     const date = new Date();
     const utilisateurId = 1;
     const sql = `INSERT INTO historiqueGAZ (niveau, date, utilisateurId) values (?,?,?)`;
-    connect.query(sql, [niveau, date, utilisateurId], (error, results) => {
+    res.locals.connection.query(sql, [niveau, date, utilisateurId], (error, results) => {
         if (error){
             console.log(error);
         } else {
