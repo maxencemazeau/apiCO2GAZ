@@ -1,129 +1,87 @@
 const express = require('express');
-// const mysql = require('mysql');
-const cors = require ('cors');
+const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
-require('dotenv').config()
+require('dotenv').config();
 const port = process.env.PORT || 8080;
-const mysql = require('mysql2')
-const connection = mysql.createConnection(process.env.DATABASE_URL)
-console.log('Connected to PlanetScale!')
+const faunadb = require('faunadb');
+const q = faunadb.query;
 
+const client = new faunadb.Client({
+  secret: process.env.FAUNADB_SECRET,
+});
 
+app.listen(port, () => console.log('Listen on port ' + port));
 
-app.listen(port, () => console.log('Listen on port ' + port))
-// //Mysql
+const corsOptions = {
+  origin: '*',
+  method: 'GET,PUT,POST,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type'],
+  credentials: true,
+  optionSuccessStatus: 200,
+};
 
-// app.use(function(req, res, next){
-//     connection = mysql.createConnection({
-//     connectionLimit : 10,
-//     MYSQL_URL:'mysql://root:xTnHoUXHxcxYIaX3bvTc@containers-us-west-32.railway.app:5683/railway',
-//     ${{MySQL.MYSQLDATABASE}}
-//     MYSQLUSER: 'root',
-//     MYSQLHOST: ${{MySQL.MYSQLHOST}},
-//     MYSQLPASSWORD: 'xTnHoUXHxcxYIaX3bvTc',
-//     MYSQLPORT:'5683',
-
-// });
-//    connection.connect();
-//     next();
-// });
-
-const corsOptions ={
-    origin:'*', 
-    method : 'GET,PUT,POST,DELETE,OPTIONS',
-    allowedHeaders: ['Content-Type'],
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200,
-    
-}
 app.use(cors(corsOptions));
-
-
-// JSON body parser, there is no `extended` option here
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/json
-app.use(bodyParser.json())
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-
-
-//API Utilisateur 
-app.post('/api/controller/connexion', function(req, res){
-    const { login, password } = req.body;
-    // SQL query to check if user exists and password is correct
-    const query = `SELECT * FROM utilisateur WHERE login = '${login}' AND password = '${password}'`;
-    console.log(query);
-    // Execute the SQL query
-    connection.query(query, function(err, rows) {
-      if (err) {
-        console.log(err);
-        res.status(500).send('Internal server error');
-      } else if (rows.length == 0) {
-        res.status(401).send('Invalid username or password');
-      } else {
-        const utilisateur = rows[0];
-        console.log('success');
-        // Successful login, send back the user data
-        res.send({
-          id: utilisateur.id,
-          login: utilisateur.login,
-          });
-      }
-    });
+async function getAllUsers() {
+    try {
+      const result = await client.query(
+        q.Map(
+          q.Paginate(q.Documents(q.Collection('user'))),
+          q.Lambda('userRef', q.Get(q.Var('userRef')))
+        )
+      );
+      return result.data;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      throw error;
+    }
+  }
+  
+  // Add a new API route to get all users
+  app.get('/api/controller/users', async (req, res) => {
+    try {
+      const users = await getAllUsers();
+      res.json(users);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      res.status(500).send('Internal server error');
+    }
   });
 
-  app.get('/api/controller/utilisateur', (req, res) => {
-    connection('SELECT * from utilisateur', function(req, res){
-        if(error) throw error;
-        res.json(results);
-    })
-  })
-
-//API pour gérer le GAZ et CO2
-
-app.get('/api/controller/historiqueCO2', function(req, res, next){ 
-   res.locals.connection.query('Select * from historiqueCO2', function(error, results, fields){
-        if (error) throw error;
-        res.json(results);
-    })
-});
-
-app.get('/api/controller/historiqueGAZ', function(req, res, next){ 
-    res.locals.connection.query('Select * from historiqueGAZ', function(error, results, fields){
-        if (error) throw error;
-        res.json(results);
-    })
-});
-
-app.post('/api/controller/envoieCO2', (req, res) => {
-    console.log(req.body);
-    const  {niveau} = req.body;
-    const date = new Date();
-    const utilisateurId = 1;
-    const sql = `INSERT INTO historiqueCO2 (niveau, date, utilisateurId) values (?,?,?)`;
-    res.locals.connection.query(sql, [niveau, date, utilisateurId], (error, results) => {
-        if (error){
-            console.log(error);
-        } else {
-            res.send('Donnée insérées');
-        }
-    })
-});
-
-app.post('/api/controller/envoieGAZ', (req, res) => {
-    console.log(req.body);
-    const  {niveau} = req.body;
-    const date = new Date();
-    const utilisateurId = 1;
-    const sql = `INSERT INTO historiqueGAZ (niveau, date, utilisateurId) values (?,?,?)`;
-    res.locals.connection.query(sql, [niveau, date, utilisateurId], (error, results) => {
-        if (error){
-            console.log(error);
-        } else {
-            res.send('Donnée insérées');
-        }
-    })
-});
+// Add your updated API routes here
+app.post('/api/controller/connexion', async function (req, res) {
+    const { login, password } = req.body;
+  
+    try {
+      const users = await client.query(
+        q.Map(
+          q.Paginate(q.Documents(q.Collection('user'))),
+          q.Lambda('userRef', q.Get(q.Var('userRef')))
+        )
+      );
+  
+      const user = users.data.find(
+        (user) => user.data.login === login && user.data.password === password
+      );
+  
+      if (user) {
+        console.log('success');
+        res.send({
+          id: user.ref.id,
+          login: user.data.login,
+          password: user.data.password,
+        });
+      } else {
+        res.status(401).send('Invalid username or password');
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send('Internal server error');
+    }
+  });
+  
+  
