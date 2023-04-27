@@ -5,7 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 8080;
 const mysql = require('mysql2')
-//const connection = mysql.createConnection(process.env.DATABASE_URL)
+const connection = mysql.createConnection(process.env.DATABASE_URL)
 console.log('Connected to PlanetScale!')
 
 
@@ -13,20 +13,20 @@ console.log('Connected to PlanetScale!')
 app.listen(port, () => console.log('Listen on port ' + port))
 // //Mysql
 
-app.use(function(req, res, next){
-    connection = mysql.createConnection({
-    connectionLimit : 10,
-    MYSQL_URL:'mysql://root:xTnHoUXHxcxYIaX3bvTc@containers-us-west-32.railway.app:5683/railway',
-    MYSQLDATABASE: 'railway',
-    MYSQLUSER: 'root',
-    MYSQLHOST: 'containers-us-west-32.railway.app',
-    MYSQLPASSWORD: 'xTnHoUXHxcxYIaX3bvTc',
-    MYSQLPORT:'5683',
+// app.use(function(req, res, next){
+//     connection = mysql.createConnection({
+//     connectionLimit : 10,
+//     MYSQL_URL:'mysql://root:xTnHoUXHxcxYIaX3bvTc@containers-us-west-32.railway.app:5683/railway',
+//     ${{MySQL.MYSQLDATABASE}}
+//     MYSQLUSER: 'root',
+//     MYSQLHOST: ${{MySQL.MYSQLHOST}},
+//     MYSQLPASSWORD: 'xTnHoUXHxcxYIaX3bvTc',
+//     MYSQLPORT:'5683',
 
-});
-   connection.connect();
-    next();
-});
+// });
+//    connection.connect();
+//     next();
+// });
 
 const corsOptions ={
     origin:'*', 
