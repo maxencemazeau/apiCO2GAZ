@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 8080;
 require('dotenv').config()
 const mysql = require('mysql2')
-const connection = mysql.createConnection(process.env.DATABASE_URL)
+//const connection = mysql.createConnection(process.env.DATABASE_URL)
 console.log('Connected to PlanetScale!')
 
 
@@ -14,17 +14,18 @@ console.log('Connected to PlanetScale!')
 app.listen(port, () => console.log('Listen on port ' + port))
 // //Mysql
 
-// app.use(function(req, res, next){
-//     res.locals.connection = mysql.createConnection({
-//     connectionLimit : 10,
-//     host : 'localhost',
-//     user : 'root',
-//     password : '',
-//     database : 'CO2GAZ'
-// });
-//     res.locals.connection.connect();
-//     next();
-// });
+app.use(function(req, res, next){
+    connection = mysql.createConnection({
+    connectionLimit : 10,
+    database: 'co2gaz',
+    username: 'eip30hk3zz3liqpv2smw',
+    host: 'gcp.connect.psdb.cloud',
+    password: '************'
+
+});
+    res.locals.connection.connect();
+    next();
+});
 
 const corsOptions ={
     origin:'*', 
