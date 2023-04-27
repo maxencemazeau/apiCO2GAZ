@@ -19,6 +19,10 @@
   "homepage": "https://github.com/maxencemazeau/apiCO2GAZ#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "node": "^19.8.1"
+    "node": "^19.8.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.3.3"
   }
 }
