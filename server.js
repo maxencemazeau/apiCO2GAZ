@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require ('cors');
 const app = express();
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 const mysql = require('mysql2')
 //const connection = mysql.createConnection(process.env.DATABASE_URL)
 console.log('Connected to PlanetScale!')
@@ -22,7 +22,7 @@ app.use(function(req, res, next){
     password: '************'
 
 });
-    res.locals.connection.connect();
+   connection.connect();
     next();
 });
 
