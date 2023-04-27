@@ -16,11 +16,12 @@ app.listen(port, () => console.log('Listen on port ' + port))
 app.use(function(req, res, next){
     connection = mysql.createConnection({
     connectionLimit : 10,
-    database: 'co2gaz',
-    username: 'eip30hk3zz3liqpv2smw',
-    host: 'gcp.connect.psdb.cloud',
-    password: '************',
-    ssl:{"rejectUnauthorized":true}
+    MYSQL_URL:'mysql://root:xTnHoUXHxcxYIaX3bvTc@containers-us-west-32.railway.app:5683/railway',
+    MYSQLDATABASE: 'railway',
+    MYSQLUSER: 'root',
+    MYSQLHOST: 'containers-us-west-32.railway.app',
+    MYSQLPASSWORD: 'xTnHoUXHxcxYIaX3bvTc',
+    MYSQLPORT:'5683',
 
 });
    connection.connect();
