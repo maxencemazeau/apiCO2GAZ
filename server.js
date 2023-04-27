@@ -19,7 +19,8 @@ app.use(function(req, res, next){
     database: 'co2gaz',
     username: 'eip30hk3zz3liqpv2smw',
     host: 'gcp.connect.psdb.cloud',
-    password: '************'
+    password: '************',
+    ssl:{"rejectUnauthorized":true}
 
 });
    connection.connect();
