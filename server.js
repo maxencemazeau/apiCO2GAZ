@@ -12,6 +12,7 @@ const client = new faunadb.Client({
 });
 
 app.listen(port, () => console.log('Listen on port ' + port));
+console.log('running');
 
 const corsOptions = {
   origin: '*',
