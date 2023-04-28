@@ -8,7 +8,7 @@ const faunadb = require('faunadb');
 const q = faunadb.query;
 
 const client = new faunadb.Client({
-  secret: FAUNADB_SECRET=fnAFClnLzBAAUUzh99Ew5QqGYBJRb_DlGpiifLwu
+  secret: "fnAFClnLzBAAUUzh99Ew5QqGYBJRb_DlGpiifLwu"
 });
 
 app.listen(port, () => console.log('Listen on port ' + port));
