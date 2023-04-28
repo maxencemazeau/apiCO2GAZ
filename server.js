@@ -85,9 +85,9 @@ app.post('/api/controller/connexion', async function (req, res) {
     }
   });
 
-  app.post("/api/controller/envoieCO2", async (req, res) => {
+  app.post("/api/controller/envoieNiveau", async (req, res) => {
     console.log(req.body);
-    const { niveau } = req.body;
+    const { niveau, topic } = req.body;
     const date = new Date();
   
     try {
@@ -95,6 +95,7 @@ app.post('/api/controller/connexion', async function (req, res) {
         q.Create(q.Collection("historiqueCO2"), {
           data: {
             niveau: niveau,
+            topic : topic,
             date: q.Time(date.toISOString()),
           },
         })
