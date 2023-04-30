@@ -12,7 +12,6 @@ const client = new faunadb.Client({
 });
 
 app.listen(port, () => console.log('Listen on port ' + port));
-console.log('running');
 
 const corsOptions = {
   origin: '*',
@@ -37,7 +36,7 @@ async function getAllUsers() {
       );
       return result.data;
     } catch (error) {
-      console.error('Error fetching users:', error);
+      
       throw error;
     }
   }
@@ -48,7 +47,7 @@ async function getAllUsers() {
       const users = await getAllUsers();
       res.json(users);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      
       res.status(500).send('Internal server error');
     }
   });
@@ -70,7 +69,7 @@ app.post('/api/controller/connexion', async function (req, res) {
       );
   
       if (user) {
-        console.log('success');
+        
         res.send({
           id: user.ref.id,
           login: user.data.login,
@@ -80,7 +79,7 @@ app.post('/api/controller/connexion', async function (req, res) {
         res.status(401).send('Invalid username or password');
       }
     } catch (err) {
-      console.log(err);
+    
       res.status(500).send('Internal server error');
     }
   });
@@ -102,7 +101,7 @@ app.post('/api/controller/connexion', async function (req, res) {
       );
       res.send("Donnée insérées");
     } catch (error) {
-      console.error("Error creating document:", error);
+      
       res.status(500).send("Internal server error");
     }
   });
